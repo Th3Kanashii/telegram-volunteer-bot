@@ -14,9 +14,7 @@ router: Final[Router] = Router(name=__name__)
 
 
 @router.message(Command("db"))
-async def process_command_get_db(
-    message: Message, repo: RequestsRepo, i18n: I18nContext
-) -> None:
+async def process_command_get_db(message: Message, repo: RequestsRepo, i18n: I18nContext) -> None:
     """
     Handler to /db commands.
     Generates a database report in the form of an Excel file and sends it.

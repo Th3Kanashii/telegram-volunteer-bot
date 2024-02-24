@@ -12,6 +12,7 @@ class DatabaseMiddleware(BaseMiddleware):
     """
     Middleware for database sessions and data manipulation repository.
     """
+
     __slots__ = ("session_pool",)
 
     def __init__(self, session_pool: async_sessionmaker) -> None:
