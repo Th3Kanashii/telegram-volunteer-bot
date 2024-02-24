@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Volunteer bot"
 authors = ["Kanashii"]
 
-repository = "https://github.com/Th3Kanashii/Personality"
+repository = "https://github.com/Th3Kanashii/telegram-volunteer-bot"
 license = "MIT"
 
 [tool.black]
