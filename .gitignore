@@ -1,0 +1,16 @@
+# Project
+.idea/
+.vscode/
+.venv/
+.env
+venv/
+tests/
+
+# Cache
+__pycache__/
+*.py[cod]
+.cache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage/
