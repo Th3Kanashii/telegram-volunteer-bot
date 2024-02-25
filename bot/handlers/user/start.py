@@ -1,7 +1,8 @@
 from typing import Any, Final
 
-from aiogram import Bot, Router
+from aiogram import Router
 from aiogram.filters import CommandStart
+from aiogram.methods import TelegramMethod
 from aiogram.types import Message
 from aiogram_i18n import I18nContext
 
@@ -13,8 +14,8 @@ router: Final[Router] = Router(name=__name__)
 
 @router.message(CommandStart(), flags={"throttling_key": "default"})
 async def process_command_start(
-    message: Message, user: User, repo: RequestsRepo, i18n: I18nContext, bot: Bot
-) -> Any:
+    message: Message, user: User, repo: RequestsRepo, i18n: I18nContext
+) -> TelegramMethod[Any]:
     """
     Handler to /start commands with user.
 

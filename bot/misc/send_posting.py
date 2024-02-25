@@ -1,5 +1,4 @@
 import asyncio
-from typing import Any
 
 from aiogram import Bot
 from aiogram.exceptions import TelegramBadRequest
@@ -8,7 +7,7 @@ from aiogram.types import Message
 from bot.config import Config
 
 
-async def send_posting(message: Message, bot: Bot, config: Config, users: list[tuple]) -> Any:
+async def send_posting(message: Message, bot: Bot, config: Config, users: list[tuple]) -> bool:
     """
     Send posting to all users in category
 

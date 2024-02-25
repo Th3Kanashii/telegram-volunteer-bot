@@ -2,6 +2,7 @@ from typing import Any, Final
 
 from aiogram import Router
 from aiogram.filters import JOIN_TRANSITION, ChatMemberUpdatedFilter
+from aiogram.methods import TelegramMethod
 from aiogram.types import ChatMemberUpdated
 from aiogram.utils.markdown import hlink
 from aiogram_i18n import I18nContext
@@ -10,7 +11,7 @@ router: Final[Router] = Router(name=__name__)
 
 
 @router.chat_member(ChatMemberUpdatedFilter(JOIN_TRANSITION))
-async def new_member(event: ChatMemberUpdated, i18n: I18nContext) -> Any:
+async def new_member(event: ChatMemberUpdated, i18n: I18nContext) -> TelegramMethod[Any]:
     """
     Handles new chat members and sends a welcome message.
 

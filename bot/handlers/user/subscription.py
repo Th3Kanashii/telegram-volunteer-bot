@@ -1,6 +1,7 @@
 from typing import Any, Final
 
 from aiogram import Bot, F, Router
+from aiogram.methods import TelegramMethod
 from aiogram.types import ChatMemberMember, Message
 from aiogram_i18n import I18nContext, LazyProxy
 
@@ -15,7 +16,7 @@ router: Final[Router] = Router(name=__name__)
 @router.message(F.text.in_(SubscribeManager.get_subscribe()))
 async def process_subscribe(
     message: Message, user: User, repo: RequestsRepo, i18n: I18nContext
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler user subscription to specific categories.
 
@@ -39,7 +40,7 @@ async def process_subscribe(
 @router.message(F.text.in_(SubscribeManager.get_subscribed()))
 async def process_subscribed(
     message: Message, user: User, repo: RequestsRepo, i18n: I18nContext
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler user subscribed.
 
@@ -70,7 +71,7 @@ async def process_subscribed(
 @router.message(F.text == LazyProxy("living-library-btn"), flags={"throttling_key": "default"})
 async def process_living_library(
     message: Message, bot: Bot, i18n: I18nContext, config: Config
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler to provide a link to the live library chat.
 
@@ -91,7 +92,7 @@ async def process_living_library(
 @router.message(F.text == LazyProxy("cancel-subscribe"))
 async def process_unsubscribe(
     message: Message, user: User, repo: RequestsRepo, i18n: I18nContext
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler user cancellation of subscriptions.
 
@@ -112,7 +113,7 @@ async def process_unsubscribe(
 @router.message(F.text == LazyProxy("main-menu"))
 async def process_main_menu(
     message: Message, user: User, repo: RequestsRepo, i18n: I18nContext
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler a return to the main menu.
 

@@ -108,7 +108,7 @@ class UserRepo(BaseRepo):
         )
         return await self.session.scalar(query)
 
-    async def get_user_data(self, fields: tuple[str]) -> list[tuple]:
+    async def get_user_data(self, fields: tuple[str, ...]) -> list[tuple]:
         """
         Retrieve user data from the database based on the provided fields.
 

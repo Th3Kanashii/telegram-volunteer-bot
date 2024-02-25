@@ -1,15 +1,16 @@
 from typing import Any, Final
 
 from aiogram import Bot, Router, html
-from aiogram.types import Message
+from aiogram.methods import TelegramMethod
+from aiogram.types import InputMedia, Message
 
 router: Final[Router] = Router(name=__name__)
 
 
 @router.message()
 async def process_from_forum(
-    message: Message, bot: Bot, user_id: int, category: str, album: list[Message] = None
-) -> Any:
+    message: Message, bot: Bot, user_id: int, category: str, album: list[InputMedia] = None
+) -> list[Message] | Message | TelegramMethod[Any]:
     """
     Handler messages from admin and copy them to a user chat.
 
@@ -17,8 +18,8 @@ async def process_from_forum(
     :param bot: The bot object used to interact with the Telegram API.
     :param user_id: The Telegram user ID.
     :param category: The category from admin.
-    :pram album: The album of messages.
-    :return: A Telegram method.
+    :param album: The list of media for creating a media album (optional).
+    :return: TelegramMethod[Any] or Message or list[Message].
     """
     if album:
         return await bot.send_media_group(chat_id=user_id, media=album)

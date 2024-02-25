@@ -2,6 +2,7 @@ from collections.abc import Awaitable, Callable
 from typing import Any
 
 from aiogram import BaseMiddleware, Bot
+from aiogram.methods import TelegramMethod
 from aiogram.types import ForumTopic, Message
 from aiogram.utils.markdown import hlink
 from aiogram_i18n import I18nContext
@@ -19,7 +20,7 @@ class TopicMiddleware(BaseMiddleware):
     @staticmethod
     async def create_topic(
         event: Message, bot: Bot, chat_id: int, user: User, repo: RequestsRepo, i18n: I18nContext
-    ) -> Any:
+    ) -> TelegramMethod[Any]:
         """
         Create a new forum topic and associated chat for a user.
 
@@ -29,6 +30,7 @@ class TopicMiddleware(BaseMiddleware):
         :param user: The database user object.
         :param repo: The repository for database requests.
         :param i18n: The internationalization context for language localization.
+        :return: The Telegram method to create a new forum topic.
         """
         topic_id: ForumTopic = await bot.create_forum_topic(
             chat_id=chat_id, name=event.from_user.first_name
@@ -66,7 +68,7 @@ class TopicMiddleware(BaseMiddleware):
         config: Config = data["config"]
 
         active_category: str | None = user.active_category
-        user_topic: str = f"{active_category}_topic"
+        user_topic = f"{active_category}_topic"
 
         if not active_category:
             subscriptions: list[str] = await repo.users.get_user_subscriptions(user=user)
@@ -76,7 +78,7 @@ class TopicMiddleware(BaseMiddleware):
             )
 
         if hasattr(user, user_topic) and not getattr(user, user_topic):
-            chat_id: str = getattr(config.tg_bot, user.active_category)
+            chat_id = getattr(config.tg_bot, user.active_category)
             return await self.create_topic(
                 event=event, bot=bot, chat_id=chat_id, user=user, repo=repo, i18n=i18n
             )

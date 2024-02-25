@@ -2,6 +2,7 @@ from typing import Any, Final
 
 from aiogram import F, Router
 from aiogram.filters import Command
+from aiogram.methods import TelegramMethod
 from aiogram.types import Message
 from aiogram_i18n import I18nContext
 
@@ -12,7 +13,7 @@ router: Final[Router] = Router(name=__name__)
 
 
 @router.message(Command("language"), flags={"throttling_key": "default"})
-async def process_choose_a_language(message: Message, i18n: I18nContext) -> Any:
+async def process_choose_a_language(message: Message, i18n: I18nContext) -> TelegramMethod[Any]:
     """
     Handler to /language commands.
 
@@ -33,7 +34,7 @@ async def process_choose_a_language(message: Message, i18n: I18nContext) -> Any:
 @router.message(F.text.in_(["EN 🇬🇧", "UA 🇺🇦", "JA 🇯🇵"]))
 async def process_set_the_language(
     message: Message, user: User, i18n: I18nContext, repo: RequestsRepo
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler for processing language selection in the Telegram bot.
 

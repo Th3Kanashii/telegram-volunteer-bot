@@ -4,6 +4,7 @@ from typing import Any, Final
 from aiogram import Bot, Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
+from aiogram.methods import TelegramMethod
 from aiogram.types import Message
 from aiogram_i18n import I18nContext
 
@@ -15,7 +16,7 @@ router: Final[Router] = Router(name=__name__)
 @router.message(Command("all", prefix="!"))
 async def process_command_send_all(
     message: Message, bot: Bot, repo: RequestsRepo, i18n: I18nContext
-) -> Any:
+) -> TelegramMethod[Any]:
     """
     Handler to command /all
     Send text messages to all users
@@ -29,7 +30,7 @@ async def process_command_send_all(
     if not message.text or len(message.text) <= 4:
         return message.answer(text=i18n.get("something-went-wrong"))
 
-    users: list[tuple] = await repo.users.get_all_users()
+    users: list[tuple] = await repo.users.get_user_data(("id",))
 
     for user in users:
         try:

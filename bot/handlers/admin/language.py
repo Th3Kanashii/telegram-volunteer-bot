@@ -2,6 +2,7 @@ from typing import Any, Final
 
 from aiogram import F, Router
 from aiogram.filters import Command
+from aiogram.methods import TelegramMethod
 from aiogram.types import CallbackQuery, Message
 from aiogram_i18n import I18nContext
 
@@ -11,9 +12,10 @@ router: Final[Router] = Router(name=__name__)
 
 
 @router.message(Command("language"))
-async def process_choose_a_language(message: Message, i18n: I18nContext) -> Any:
+async def process_choose_a_language(message: Message, i18n: I18nContext) -> TelegramMethod[Any]:
     """
-    Handler user subscription to specific categories.
+    Handler to command /language.
+    Send a message to choose a language.
 
     :param message: The message from Telegram.
     :param i18n: The internationalization context for language localization.
@@ -26,9 +28,12 @@ async def process_choose_a_language(message: Message, i18n: I18nContext) -> Any:
 
 
 @router.callback_query(F.data.startswith("language"))
-async def process_set_the_language(callback: CallbackQuery, i18n: I18nContext) -> Any:
+async def process_set_the_language(
+    callback: CallbackQuery, i18n: I18nContext
+) -> TelegramMethod[Any]:
     """
     Handler admin callback for change language.
+    Set the language for the admin.
 
     :param callback: The callback query from the admin.
     :param i18n: The internationalization context for language localization.

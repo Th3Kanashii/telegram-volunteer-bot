@@ -1,10 +1,10 @@
 import csv
-import os
-from typing import Final
+from typing import Any, Final
 
 import aiofiles
 from aiogram import Router
 from aiogram.filters import Command
+from aiogram.methods import TelegramMethod
 from aiogram.types import FSInputFile, Message
 from aiogram_i18n import I18nContext
 
@@ -14,7 +14,9 @@ router: Final[Router] = Router(name=__name__)
 
 
 @router.message(Command("db"))
-async def process_command_get_db(message: Message, repo: RequestsRepo, i18n: I18nContext) -> None:
+async def process_command_get_db(
+    message: Message, repo: RequestsRepo, i18n: I18nContext
+) -> TelegramMethod[Any]:
     """
     Handler to /db commands.
     Generates a database report in the form of an Excel file and sends it.
@@ -59,7 +61,7 @@ async def process_command_get_db(message: Message, repo: RequestsRepo, i18n: I18
                     category_counts[i - 4] += 1 if row_data[i] else 0
             await writer.writerow(row_data)
 
-    subscription_count: int = sum(category_counts)
+    subscription_count = sum(category_counts)
     category_percentages: list[float | int] = [
         round((count / subscription_count) * 100, 1) if subscription_count > 0 else 0
         for count in category_counts
@@ -78,5 +80,5 @@ async def process_command_get_db(message: Message, repo: RequestsRepo, i18n: I18
         legal_support=category_counts[3],
         legal_support_percentages=category_percentages[3],
     )
-    await message.answer_document(document=file_data, caption=caption)
-    return os.remove("users.csv")
+
+    return message.answer_document(document=file_data, caption=caption)

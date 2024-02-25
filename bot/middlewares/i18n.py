@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import cast
+from typing import Optional, cast
 
 from aiogram.types import user
 from aiogram_i18n.managers import BaseManager
@@ -13,7 +13,9 @@ class UserManager(BaseManager):
     Middleware for installing and obtaining localization
     """
 
-    async def get_locale(self, event_from_user: user.User, user: User) -> str:
+    async def get_locale(
+        self, event_from_user: Optional[user.User] = None, user: Optional[User] = None
+    ) -> str:
         if user:
             return user.locale
         if event_from_user:
