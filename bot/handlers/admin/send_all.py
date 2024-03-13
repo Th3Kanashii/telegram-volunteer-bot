@@ -30,7 +30,7 @@ async def process_command_send_all(
     if not message.text or len(message.text) <= 4:
         return message.answer(text=i18n.get("something-went-wrong"))
 
-    users: list[tuple] = await repo.users.get_user_data(("id",))
+    users: list[tuple] = await repo.users.get_data(("id",))
 
     for user in users:
         try:

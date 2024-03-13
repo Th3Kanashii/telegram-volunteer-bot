@@ -45,7 +45,7 @@ async def process_command_get_db(
         "legal_support",
     )
 
-    data: list[tuple] = await repo.users.get_user_data(fields=fields)
+    data: list[tuple] = await repo.users.get_data(fields=fields)
 
     users = 0
     category_counts = [0, 0, 0, 0]

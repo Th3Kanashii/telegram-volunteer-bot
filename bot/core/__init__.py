@@ -1,4 +1,4 @@
-from .factories import create_bot, create_dispatcher
+from .factory import create_bot, create_dispatcher
 from .runner import run_polling
 
 __all__ = [

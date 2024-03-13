@@ -25,7 +25,7 @@ async def process_command_start(
     :param i18n: The internationalization context for language localization.
     :return: A Telegram method.
     """
-    subscriptions: list[str] = await repo.users.get_user_subscriptions(user=user)
+    subscriptions: list[str] = await repo.users.get_subscriptions(user=user)
     return message.answer(
         text=i18n.get("start", name=message.from_user.first_name),
         reply_markup=start(subscriptions=subscriptions, i18n=i18n),

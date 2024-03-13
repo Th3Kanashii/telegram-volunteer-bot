@@ -24,9 +24,9 @@ class UserMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         repo: RequestsRepo = data["repo"]
-        aiogram_user: User | None = await repo.users.get_user(user_id=tg_user.id)
+        aiogram_user: User | None = await repo.users.get(user_id=tg_user.id)
         if aiogram_user is None:
-            data["user"] = await repo.users.add_user(tg_user=tg_user)
+            data["user"] = await repo.users.add(tg_user=tg_user)
             return await handler(event, data)
 
         data["user"] = aiogram_user

@@ -27,7 +27,7 @@ async def process_subscribe(
     :return: A Telegram method.
     """
     text = SubscribeManager.get_subscribe_value(category=message.text)
-    await repo.users.update_user_subscription(user=user, category=message.text)
+    await repo.users.update_subscription(user=user, category=message.text)
     return message.answer(
         text=i18n.get(text),
         reply_markup=builder_reply(
@@ -50,7 +50,7 @@ async def process_subscribed(
     :param i18n: The internationalization context for language localization.
     :return: A Telegram method.
     """
-    await repo.users.update_user_subscription(user=user, category=message.text)
+    await repo.users.update_subscription(user=user, category=message.text)
     if message.text == i18n.get("civic-education-sub"):
         return message.answer(
             text=i18n.get("volunteer-not-active"),
@@ -102,8 +102,8 @@ async def process_unsubscribe(
     :param i18n: The internationalization context for language localization.
     :return: A Telegram method.
     """
-    await repo.users.unsubscribe_user(user=user)
-    subscriptions: list[str] = await repo.users.get_user_subscriptions(user=user)
+    await repo.users.unsubscribe(user=user)
+    subscriptions: list[str] = await repo.users.get_subscriptions(user=user)
     return message.answer(
         text=i18n.get("subscription-cancelled"),
         reply_markup=start(subscriptions=subscriptions, i18n=i18n),
@@ -123,7 +123,7 @@ async def process_main_menu(
     :param i18n: The internationalization context for language localization.
     :return: A Telegram method.
     """
-    subscriptions: list[str] = await repo.users.get_user_subscriptions(user=user)
+    subscriptions: list[str] = await repo.users.get_subscriptions(user=user)
     await repo.users.main_user_menu(user=user)
     return message.answer(
         text=i18n.get("back-menu"), reply_markup=start(subscriptions=subscriptions, i18n=i18n)

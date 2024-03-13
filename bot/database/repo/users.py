@@ -16,7 +16,7 @@ class UserRepo(BaseRepo):
     Repository class for handling operations related to users in the database.
     """
 
-    async def get_user(self, user_id: int) -> User | None:
+    async def get(self, user_id: int) -> User | None:
         """
         Retrieves a user from the database by their ID.
 
@@ -25,7 +25,7 @@ class UserRepo(BaseRepo):
         """
         return await self.session.get(User, user_id)
 
-    async def add_user(self, tg_user: TgUser) -> User:
+    async def add(self, tg_user: TgUser) -> User:
         """
         Adds a user to the database or updates an existing user.
 
@@ -38,7 +38,7 @@ class UserRepo(BaseRepo):
 
         return user
 
-    async def update_user_subscription(self, user: User, category: str) -> None:
+    async def update_subscription(self, user: User, category: str) -> None:
         """
         Renews or cancels a user's subscription to a category.
 
@@ -51,7 +51,7 @@ class UserRepo(BaseRepo):
 
         await self.session.commit()
 
-    async def unsubscribe_user(self, user: User) -> None:
+    async def unsubscribe(self, user: User) -> None:
         """
         Cancel user subscription
 
@@ -62,7 +62,7 @@ class UserRepo(BaseRepo):
 
         await self.session.commit()
 
-    async def main_user_menu(self, user: User) -> None:
+    async def main_menu(self, user: User) -> None:
         """
         Back main menu the user
 
@@ -71,7 +71,7 @@ class UserRepo(BaseRepo):
         user.active_category = None
         await self.session.commit()
 
-    async def get_user_subscriptions(self, user: User) -> list[str]:
+    async def get_subscriptions(self, user: User) -> list[str]:
         """
         Gets a list of user subscriptions.
 
@@ -95,7 +95,7 @@ class UserRepo(BaseRepo):
         setattr(user, f"{user.active_category}_topic", topic_id)
         await self.session.commit()
 
-    async def get_user_id_by_topic(self, topic_id: int, category: str) -> int | None:
+    async def get_id_by_topic(self, topic_id: int, category: str) -> int | None:
         """
         Retrieve a user ID based on a specific topic ID and category.
 
@@ -108,7 +108,7 @@ class UserRepo(BaseRepo):
         )
         return await self.session.scalar(query)
 
-    async def get_user_data(self, fields: tuple[str, ...]) -> list[tuple]:
+    async def get_data(self, fields: tuple[str, ...]) -> list[tuple]:
         """
         Retrieve user data from the database based on the provided fields.
 

@@ -44,7 +44,7 @@ async def process_set_the_language(
     :param repo: The repository for database requests.
     :return: A Telegram method.
     """
-    subscriptions: list[str] = await repo.users.get_user_subscriptions(user=user)
+    subscriptions: list[str] = await repo.users.get_subscriptions(user=user)
     await i18n.set_locale(message.text.split()[0].lower() if message.text != "UA 🇺🇦" else "uk")
     return message.answer(
         text=i18n.get("start", name=message.from_user.first_name),

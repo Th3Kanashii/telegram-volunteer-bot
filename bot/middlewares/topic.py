@@ -71,7 +71,7 @@ class TopicMiddleware(BaseMiddleware):
         user_topic = f"{active_category}_topic"
 
         if not active_category:
-            subscriptions: list[str] = await repo.users.get_user_subscriptions(user=user)
+            subscriptions: list[str] = await repo.users.get_subscriptions(user=user)
             return event.answer(
                 text=i18n.get("not-category"),
                 reply_markup=start(subscriptions=subscriptions, i18n=i18n),

@@ -120,7 +120,7 @@ async def process_posting_message(
         "civic_education",
         "legal_support",
     )
-    users: list[tuple] = await repo.users.get_user_data(fields=fields)
+    users: list[tuple] = await repo.users.get_data(fields=fields)
 
     scheduler.add_job(
         send_posting,
