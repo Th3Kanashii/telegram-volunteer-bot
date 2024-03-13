@@ -1,9 +1,28 @@
-from aiogram import Router
+from typing import Final
+
+from aiogram import Bot, F, Router
+from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats
 
 from bot.filters import JoinGroup
 from bot.middlewares import AlbumMiddleware, ThrottlingMiddleware, TopicMiddleware
 
 from . import from_user, help, language, new_member, start, subscription
+
+
+async def set_user_commands(bot: Bot) -> None:
+    """
+    Set custom user interface commands.
+
+    :param bot: The bot object used to interact with the Telegram API.
+    """
+    await bot.set_my_commands(
+        commands=[
+            BotCommand(command="start", description="Main menu 📌"),
+            BotCommand(command="help", description="Help 🤝"),
+            BotCommand(command="language", description="Choose a language 🌐"),
+        ],
+        scope=BotCommandScopeAllPrivateChats(),
+    )
 
 
 def _setup_filters() -> None:
@@ -26,27 +45,29 @@ def _setup_middlewares() -> None:
     from_user.router.message.middleware(TopicMiddleware())
 
 
-def get_user_routers() -> list[Router]:
+def get_user_router() -> Router:
     """
-    Get a list of routers with user filters and specific middlewares.
+    Get a user router with filters and specific middlewares.
 
-    :return: A list of routers with user filters and middleware applied.
+    :return: A user router with included filters and middlewares.
     """
     _setup_filters()
     _setup_middlewares()
 
-    routers_list: list[Router] = [
+    user_router: Final[Router] = Router(name=__name__)
+    user_router.message.filter(F.chat.type == "private")
+    user_router.include_routers(
         start.router,
         language.router,
         help.router,
         new_member.router,
         subscription.router,
         from_user.router,
-    ]
-
-    return routers_list
+    )
+    return user_router
 
 
 __all__ = [
-    "get_user_routers",
+    "get_user_router",
+    "set_user_commands",
 ]
