@@ -124,7 +124,7 @@ async def process_main_menu(
     :return: A Telegram method.
     """
     subscriptions: list[str] = await repo.users.get_subscriptions(user=user)
-    await repo.users.main_user_menu(user=user)
+    await repo.users.main_menu(user=user)
     return message.answer(
         text=i18n.get("back-menu"), reply_markup=start(subscriptions=subscriptions, i18n=i18n)
     )
