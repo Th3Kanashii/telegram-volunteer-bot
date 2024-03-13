@@ -11,7 +11,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bot.config import Config
 from bot.database import RequestsRepo
-from bot.misc import Posting, send_posting
+from bot.filters import Posting
+from bot.misc import send_posting
 
 router: Final[Router] = Router(name=__name__)
 
