@@ -55,6 +55,7 @@ def start(i18n: I18nContext, subscriptions: list[str]) -> ReplyKeyboardMarkup:
         else:
             keyboard.row(KeyboardButton(text=category))
 
+    keyboard.adjust(2)
     return keyboard.as_markup(
         resize_keyboard=True,
         input_field_placeholder=i18n.get("placeholder-subscribe"),

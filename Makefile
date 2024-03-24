@@ -1,5 +1,11 @@
 package_dir := bot
 
+.PHONY: install
+install:
+	python3 -m venv venv
+	. venv/bin/activate && \
+	pip install -r requirements.txt -r dev-requirements.txt
+
 .PHONY: lint
 lint:
 	black --check $(package_dir)
@@ -13,7 +19,7 @@ reformat:
 
 .PHONY: migration
 migration:
-	alembic revision --autogenerate -m $(message)
+	alembic revision --autogenerate -m $(message) --rev-id $(rev_id)
 
 .PHONY: migrate
 	alembic upgrade head

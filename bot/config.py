@@ -33,6 +33,7 @@ class DbConfig:
     database: str
     port: int = 5432
 
+    @property
     def construct_sqlalchemy_url(
         self, driver: str = "asyncpg", host: str = None, port: int = None
     ) -> str:

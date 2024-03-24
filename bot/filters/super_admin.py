@@ -1,7 +1,12 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from aiogram.filters import Filter
 from aiogram.types import Message
 
-from bot.config import Config
+if TYPE_CHECKING:
+    from bot.config import Config
 
 
 class SuperAdmin(Filter):

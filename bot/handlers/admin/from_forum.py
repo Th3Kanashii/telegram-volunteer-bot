@@ -4,10 +4,16 @@ from aiogram import Bot, Router, html
 from aiogram.methods import TelegramMethod
 from aiogram.types import InputMedia, Message
 
-router: Final[Router] = Router(name=__name__)
+from bot.filters import Admin
+from bot.middlewares import AdminMiddleware, AlbumMiddleware
+
+from_forum_router: Final[Router] = Router(name=__name__)
+
+from_forum_router.message.middleware(AlbumMiddleware())
+from_forum_router.message.middleware(AdminMiddleware())
 
 
-@router.message()
+@from_forum_router.message(Admin(command=False))
 async def process_from_forum(
     message: Message, bot: Bot, user_id: int, category: str, album: list[InputMedia] = None
 ) -> list[Message] | Message | TelegramMethod[Any]:

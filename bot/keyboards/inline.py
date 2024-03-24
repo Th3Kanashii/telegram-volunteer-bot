@@ -1,10 +1,13 @@
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 from aiogram.types import ChatMemberMember, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram_i18n import I18nContext
 
-from bot.config import Config
+if TYPE_CHECKING:
+    from bot.config import Config
 
 
 def builder_inline(width: int = 2, **kwargs: Any) -> InlineKeyboardMarkup:

@@ -1,11 +1,5 @@
-from .admin import AdminMiddleware
-from .album import AlbumMiddleware
-from .database import DatabaseMiddleware
-from .i18n import UserManager
-from .scheduler import SchedulerMiddleware
-from .throttling import ThrottlingMiddleware
-from .topic import TopicMiddleware
-from .user import UserMiddleware
+from .inner import AdminMiddleware, AlbumMiddleware, ThrottlingMiddleware, TopicMiddleware
+from .outer import DatabaseMiddleware, SchedulerMiddleware, UserManager, UserMiddleware
 
 __all__ = [
     "AdminMiddleware",

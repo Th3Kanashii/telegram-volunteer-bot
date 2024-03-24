@@ -1,5 +1,5 @@
 [Project]
-name = "Personality"
+name = "telegram-volunteer-bot"
 version = "0.1.0"
 description = "Volunteer bot"
 authors = ["Th3Kanashii"]
@@ -41,9 +41,7 @@ exclude = [
     ".cache",
 ]
 ignore = [
-    "T201",
-    "S101",
-    "S106",
+    "E501",
     "DTZ001",
     "DTZ005",
     "DTZ007",

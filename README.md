@@ -1,11 +1,6 @@
-# Personality
+# 🤖 Volunteer bot in Telegram 📱
 
-Personality is a Telegram bot created to provide support and useful
-knowledge aimed at your personal development and adaptation in the modern
-society.
-There are four key areas, and by choosing each of them, you will discover
-the opportunity to receive information and ask questions
-to our qualified volunteer experts.
+A bot created to provide support and utility knowledge aimed at your personal development and adaptation in modern times society. There are four key areas and by choosing each one you will discover opportunity to get information and ask questions to our qualified volunteer experts.
 
 ## System dependencies
 
@@ -17,21 +12,46 @@ to our qualified volunteer experts.
 
 ## Deployment
 
-## Via Docker
+1. **Clone the repository:**
 
-1. Rename `.env.dist` to `.env` and configure it
+    ```bash
+    git clone https://github.com/Th3Kanashii/telegram-volunteer-bot.git
+    ```
 
-2. Run `make app-build` command then `make app-run` to start the bot
+2. **Rename `.env.dist` to `.env` and configure it:**
 
-## Update database tables structure
+   Rename the `.env.dist` file to `.env` and specify the necessary parameters for the bot to work.
+
+3. **Build the application and run the bot:**
+
+    Execute the following commands:
+
+    ```bash
+    make app-build
+    make app-run
+    ```
+
+## Development
+
+### Setup environment
+
+```bash
+make install
+```
+
+### Update database tables structure
 
 **Make migration script:**
 
-    make migration message=MESSAGE_WHAT_THE_MIGRATION_DOES
+```bash
+make migration message=MESSAGE_WHAT_THE_MIGRATION_DOES rev_id=ID_MIGRATION
+```
 
 **Run migrations:**
 
-    make migrate
+```bash
+make migrate
+```
 
 ## Used technologies
 
@@ -40,3 +60,4 @@ to our qualified volunteer experts.
 - [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) (working with database from Python)
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) (lightweight database migration tool)
 - [Project Fluent](https://projectfluent.org/) (modern localization system)
+- [APScheduler](https://apscheduler.readthedocs.io/en/3.x/) (function scheduler)

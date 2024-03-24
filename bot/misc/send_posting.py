@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 import asyncio
+from typing import TYPE_CHECKING
 
 from aiogram import Bot
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import Message
 
-from bot.config import Config
+if TYPE_CHECKING:
+    from bot.config import Config
 
 
 async def send_posting(message: Message, bot: Bot, config: Config, users: list[tuple]) -> bool:
@@ -18,10 +22,10 @@ async def send_posting(message: Message, bot: Bot, config: Config, users: list[t
     :return: The Telegram method.
     """
     categories: dict[int, int] = {
-        config.tg_bot.youth_policy: 1,
-        config.tg_bot.psychologist_support: 2,
-        config.tg_bot.civic_education: 3,
-        config.tg_bot.legal_support: 4,
+        config.tg_bot.youth_policy: 3,
+        config.tg_bot.psychologist_support: 4,
+        config.tg_bot.civic_education: 5,
+        config.tg_bot.legal_support: 6,
     }
     category = categories.get(message.chat.id)
     for user in users:

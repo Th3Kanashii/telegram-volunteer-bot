@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from aiogram import Bot, Dispatcher
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.enums import ParseMode
@@ -6,8 +10,6 @@ from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores import FluentRuntimeCore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from bot.config import Config
-from bot.database import create_pool
 from bot.handlers import get_routers
 from bot.middlewares import (
     DatabaseMiddleware,
@@ -15,6 +17,10 @@ from bot.middlewares import (
     UserManager,
     UserMiddleware,
 )
+from bot.services.database import create_pool
+
+if TYPE_CHECKING:
+    from bot.config import Config
 
 
 def _setup_outer_middlewares(dp: Dispatcher, config: Config) -> None:
@@ -29,10 +35,11 @@ def _setup_outer_middlewares(dp: Dispatcher, config: Config) -> None:
     1. DatabaseMiddleware: Integrating database operations using SQLAlchemy.
     2. UserMiddleware: Object user database.
     3. I18nMiddleware: Internationalization middleware for handling translations.
+    4. SchedulerMiddleware: Integrating the APScheduler for scheduling tasks.
     """
-    session_pool = dp["session_pool"] = create_pool(dsn=config.db.construct_sqlalchemy_url())
+    session_pool = dp["session_pool"] = create_pool(dsn=config.db.construct_sqlalchemy_url)
     i18n_middleware = dp["i18n_middleware"] = I18nMiddleware(
-        core=FluentRuntimeCore(path="locales/{locale}/LC_MESSAGES"), manager=UserManager()
+        core=FluentRuntimeCore(path="locales/{locale}"), manager=UserManager()
     )
     scheduler = dp["scheduler"] = AsyncIOScheduler(timezone="Europe/Kyiv")
 

@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from datetime import datetime, timedelta
-from typing import Any, Final
+from typing import TYPE_CHECKING, Any, Final
 
 from aiogram import Bot, Router
 from aiogram.filters import Command
@@ -9,16 +11,18 @@ from aiogram.types import Message
 from aiogram_i18n import I18nContext
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from bot.config import Config
-from bot.database import RequestsRepo
 from bot.filters import Posting
 from bot.misc import send_posting
 
-router: Final[Router] = Router(name=__name__)
+if TYPE_CHECKING:
+    from bot.config import Config
+    from bot.services.database import RequestsRepo
+
+posting_router: Final[Router] = Router(name=__name__)
 
 
-@router.message(Command("posting"))
-async def process_command_posting(
+@posting_router.message(Command("posting"))
+async def posting_command(
     message: Message, i18n: I18nContext, state: FSMContext
 ) -> TelegramMethod[Any]:
     """
@@ -34,31 +38,7 @@ async def process_command_posting(
     return message.answer(text=i18n.get("input-time"))
 
 
-@router.message(Command("cancel"))
-async def process_command_cancel(message: Message, bot: Bot, state: FSMContext) -> bool | None:
-    """
-    Handler the /cancel command.
-    Initiating the process of cancel state.
-
-    :param message: The message from Telegram.
-    :param state: The FSMContext to manage the conversation state.
-    :return: None if the current conversation state is None.
-             Otherwise, clears the state, deletes messages, and returns bot.delete_messages result.
-    """
-    current_state = await state.get_state()
-    if current_state is None:
-        return None
-
-    await state.clear()
-    messages_ids = 3 if current_state == Posting.time else 5
-
-    return await bot.delete_messages(
-        chat_id=message.chat.id,
-        message_ids=[message.message_id - id for id in range(messages_ids)],
-    )
-
-
-@router.message(Posting.time)
+@posting_router.message(Posting.time)
 async def process_posting_time(
     message: Message, i18n: I18nContext, state: FSMContext
 ) -> TelegramMethod[Any]:
@@ -71,10 +51,10 @@ async def process_posting_time(
     :return: A Telegram method.
     """
     try:
-        posting_time = datetime.strptime(message.text, "%d.%m/%H:%M")
-        current_time = datetime.now()
+        posting_time = datetime.strptime(message.text, "%d.%m/%H:%M")  # noqa  DTZ007
+        current_time = datetime.now()  # noqa  DTZ005
         current_time_format = current_time.strftime("%d.%m/%H:%M")
-        current_time = datetime.strptime(current_time_format, "%d.%m/%H:%M")
+        current_time = datetime.strptime(current_time_format, "%d.%m/%H:%M")  # noqa  DTZ007
     except ValueError:
         return message.answer(text=i18n.get("something-went-wrong"))
 
@@ -84,14 +64,14 @@ async def process_posting_time(
     time_difference = posting_time - current_time
 
     await state.update_data(
-        time=datetime.now() + timedelta(seconds=time_difference.total_seconds())
+        time=datetime.now() + timedelta(seconds=time_difference.total_seconds())  # noqa  DTZ005
     )
     await state.set_state(Posting.message)
 
     return message.answer(text=i18n.get("input-message"))
 
 
-@router.message(Posting.message)
+@posting_router.message(Posting.message)
 async def process_posting_message(
     message: Message,
     bot: Bot,
@@ -114,14 +94,7 @@ async def process_posting_message(
     data = await state.get_data()
     await state.clear()
 
-    fields: tuple[str, ...] = (
-        "id",
-        "youth_policy",
-        "psychologist_support",
-        "civic_education",
-        "legal_support",
-    )
-    users: list[tuple] = await repo.users.get_data(fields=fields)
+    users = await repo.users.get_data()
 
     scheduler.add_job(
         send_posting,

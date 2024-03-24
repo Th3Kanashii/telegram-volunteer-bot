@@ -4,10 +4,16 @@ from aiogram import Bot, Router
 from aiogram.methods import TelegramMethod
 from aiogram.types import InputMedia, Message
 
-router: Final[Router] = Router(name=__name__)
+from bot.middlewares import AlbumMiddleware, ThrottlingMiddleware, TopicMiddleware
+
+from_user_router: Final[Router] = Router(name=__name__)
+
+from_user_router.message.middleware(AlbumMiddleware())
+from_user_router.message.middleware(ThrottlingMiddleware())
+from_user_router.message.middleware(TopicMiddleware())
 
 
-@router.message(flags={"throttling_key": "default"})
+@from_user_router.message(flags={"throttling_key": "default"})
 async def process_from_user(
     message: Message, bot: Bot, chat_id: int, topic_id: int, album: list[InputMedia] = None
 ) -> list[Message] | TelegramMethod[Any]:
